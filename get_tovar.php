@@ -1,9 +1,9 @@
 <?php
 
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
+define('DB_HOST', 'mysql.hostinger.com.ua');
+define('DB_USER', 'u372374362_user');
 define('DB_PASS', '28890929');
-define('DB_NAME', 'CatTreeExampleDB');
+define('DB_NAME', 'u372374362_db');
 
 class TovarList {
 	private $connection;
@@ -89,5 +89,7 @@ IN (
     WHERE G_CAT_connection.categ_id =1
 )
 */
-
+$a = new TovarList ();
+$list = $a->get_exemplars(1);
+var_dump($list);
 ?>
