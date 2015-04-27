@@ -40,8 +40,39 @@ class TovarList {
 		)
 		';
 		
+		return $this->simple_select($query);
+	}
+	
+	function get_prices($idx_array_string) {
+		
+		$query = '
+			SELECT Prices.id AS idx, Goods_exemplars.id AS ex_idx, Prices.type AS type, Prices.value AS value
+			FROM Goods_exemplars
+			LEFT JOIN Prices
+			    ON Goods_exemplars.id = Prices.exemplar_id
+			WHERE Goods_exemplars.id IN ('.$idx_array_string.')
+		';
+		
+		return $this->simple_select($query);
+	}
+	
+	function get_attributes($attr_list_string) {
+		
+		$query = '
+		SELECT Attribute.title AS title, Attribute_value.value AS value
+		FROM Attribute
+		LEFT JOIN Attribute_value
+		    ON Attribute_value.attribute_id = Attribute.id
+		WHERE Attribute_value.id IN ('.$attr_list_string.')
+		';
+		
+		return $this->simple_select($query);
+	}
+	
+	function simple_select($query) {
 		$ret_val = array();
 		$result = $this->connection->query($query);
+		
 		while($row = $result->fetch_assoc())
 			array_push($ret_val, $row);
 		
@@ -49,6 +80,26 @@ class TovarList {
 		return $ret_val;
 	}
 }
+
+/*
+SELECT Attribute.title AS title, Attribute_value.value AS value
+FROM Attribute
+
+LEFT JOIN Attribute_value
+    ON Attribute_value.attribute_id = Attribute.id
+    
+WHERE Attribute_value.id IN (1,2)
+*/
+
+/* grabbing prices
+SELECT Prices.id AS idx, Goods_exemplars.id AS ex_idx, Prices.type AS type, Prices.value AS value
+FROM Goods_exemplars
+
+LEFT JOIN Prices
+    ON Goods_exemplars.id = Prices.exemplar_id
+    
+WHERE Goods_exemplars.id IN (1,2,3)
+*/
 
 /* grab exemplars
 SELECT Goods_exemplars.id AS idx, Goods.id AS g_idx, Goods.title AS title, Storage.amount as amount
