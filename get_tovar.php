@@ -19,16 +19,21 @@
 		'
 	}
 ?>
-
 SELECT *
 FROM Goods_exemplars
-WHERE Goods_exemplars.goods_id
-IN ( 
-    SELECT G_CAT_connection.goods_id
-    FROM G_CAT_connection
-    WHERE G_CAT_connection.categ_id =1
-)
+
 LEFT JOIN Prices
     ON Prices.exemplar_id = Goods_exemplars.id
 LEFT JOIN Storage
     ON Storage.exemplar_id = Goods_exemplars.id
+JOIN Goods
+    ON Goods.id = Goods_exemplars.id
+JOIN GC_connection
+    ON GC_connection.goods_id = Goods_exemplars.id
+
+WHERE Goods_exemplars.goods_id
+IN (
+    SELECT G_CAT_connection.goods_id
+    FROM G_CAT_connection
+    WHERE G_CAT_connection.categ_id =1
+)
