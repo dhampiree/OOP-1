@@ -69,6 +69,20 @@ class TovarList {
 		return $this->simple_select($query);
 	}
 	
+	function get_categories($goods_list_string) { 
+		$query = '
+		SELECT Goods.id AS idx, Goods.title AS title, Category.title AS cat_title ,GC_connection.value AS value
+		FROM Goods
+		JOIN GC_connection
+		    ON GC_connection.goods_id = Goods.id
+		JOIN Categories
+		    ON GC_connection.categ_id = Categories.id
+		WHERE Goods.id IN ('.$goods_list_string.')
+		';
+		
+		return $this->simple_select($query);
+	}
+	
 	function simple_select($query) {
 		$ret_val = array();
 		$result = $this->connection->query($query);
