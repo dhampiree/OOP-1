@@ -69,20 +69,6 @@ class TovarList {
 		return $this->simple_select($query);
 	}
 	
-	function get_categories($goods_list_string) { 
-		$query = '
-		SELECT Goods.id AS idx, Goods.title AS title, Category.title AS cat_title ,GC_connection.value AS value
-		FROM Goods
-		JOIN GC_connection
-		    ON GC_connection.goods_id = Goods.id
-		JOIN Categories
-		    ON GC_connection.categ_id = Categories.id
-		WHERE Goods.id IN ('.$goods_list_string.')
-		';
-		
-		return $this->simple_select($query);
-	}
-	
 	function simple_select($query) {
 		$ret_val = array();
 		$result = $this->connection->query($query);
@@ -156,5 +142,36 @@ IN (
 */
 $a = new TovarList ();
 $list = $a->get_exemplars(1);
-var_dump($list);
+function idxArr($list)
+  {
+    $i=0;
+        while (!is_null($list[$i]["idx"])) {
+          $idx_array .= $list[$i]["idx"].", ";
+          $i++;
+        }
+     return substr($idx_array, 0, -2);
+  }
+
+  function g_idxArr($list)
+  {
+    $x=0;
+        while (!is_null($list[$x]["g_idx"])) {
+          $g_idx_array[$x] .= $list[$x]["g_idx"].", ";
+          $x++;
+        }
+    $unicalArray = array_unique($g_idx_array);
+    $unicalArrayValues = array_values($unicalArray);
+    $z=0;
+        while (!is_null($unicalArrayValues[$z])) {
+          $val_g_idx .= $unicalArrayValues[$z]." ";
+          $z++;
+         } 
+    return substr($val_g_idx,0,-3);
+     
+  }
+     
+echo idxArr($list);
+echo "<br>";
+echo g_idxArr($list);
+
 ?>
