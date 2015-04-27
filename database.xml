@@ -1,262 +1,255 @@
--- ---
--- Globals
--- ---
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- SQL XML created by WWW SQL Designer, http://code.google.com/p/wwwsqldesigner/ -->
+<!-- Active URL: http://ondras.zarovi.cz/sql/demo/ -->
+<sql>
+<datatypes db="mysql">
+	<group label="Numeric" color="rgb(238,238,170)">
+		<type label="Integer" length="0" sql="INTEGER" quote=""/>
+	 	<type label="TINYINT" length="0" sql="TINYINT" quote=""/>
+	 	<type label="SMALLINT" length="0" sql="SMALLINT" quote=""/>
+	 	<type label="MEDIUMINT" length="0" sql="MEDIUMINT" quote=""/>
+	 	<type label="INT" length="0" sql="INT" quote=""/>
+		<type label="BIGINT" length="0" sql="BIGINT" quote=""/>
+		<type label="Decimal" length="1" sql="DECIMAL" re="DEC" quote=""/>
+		<type label="Single precision" length="0" sql="FLOAT" quote=""/>
+		<type label="Double precision" length="0" sql="DOUBLE" re="DOUBLE" quote=""/>
+	</group>
 
--- SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
--- SET FOREIGN_KEY_CHECKS=0;
+	<group label="Character" color="rgb(255,200,200)">
+		<type label="Char" length="1" sql="CHAR" quote="'"/>
+		<type label="Varchar" length="1" sql="VARCHAR" quote="'"/>
+		<type label="Text" length="0" sql="MEDIUMTEXT" re="TEXT" quote="'"/>
+		<type label="Binary" length="1" sql="BINARY" quote="'"/>
+		<type label="Varbinary" length="1" sql="VARBINARY" quote="'"/>
+		<type label="BLOB" length="0" sql="BLOB" re="BLOB" quote="'"/>
+	</group>
 
--- ---
--- Table 'Goods'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Goods`;
-		
-CREATE TABLE `Goods` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `title` MEDIUMTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Characteristics'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Characteristics`;
-		
-CREATE TABLE `Characteristics` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `title` MEDIUMTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'GC_connection'
--- 
--- ---
-
-DROP TABLE IF EXISTS `GC_connection`;
-		
-CREATE TABLE `GC_connection` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `goods_id` INTEGER NULL DEFAULT NULL,
-  `char_id` INTEGER NULL DEFAULT NULL,
-  `value` MEDIUMTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Goods_exemplars'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Goods_exemplars`;
-		
-CREATE TABLE `Goods_exemplars` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `goods_id` INTEGER NULL DEFAULT NULL,
-  `attribute_value_list` MEDIUMTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Attribute'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Attribute`;
-		
-CREATE TABLE `Attribute` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `title` MEDIUMTEXT NULL DEFAULT NULL,
-  `categ_id` INTEGER NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Storage'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Storage`;
-		
-CREATE TABLE `Storage` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `exemplar_id` INTEGER NULL DEFAULT NULL,
-  `amount` INTEGER NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Prices'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Prices`;
-		
-CREATE TABLE `Prices` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `exemplar_id` INTEGER NULL DEFAULT NULL,
-  `type` MEDIUMTEXT NULL DEFAULT NULL,
-  `value` INTEGER NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Orders'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Orders`;
-		
-CREATE TABLE `Orders` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `type` MEDIUMTEXT NULL DEFAULT NULL,
-  `contractor_id` INTEGER NULL DEFAULT NULL,
-  `date` DATE NULL DEFAULT NULL,
-  `confirmed` INTEGER NULL DEFAULT NULL,
-  `comment` MEDIUMTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Contractors'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Contractors`;
-		
-CREATE TABLE `Contractors` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `director` MEDIUMTEXT NULL DEFAULT NULL,
-  `contact_person` MEDIUMTEXT NULL DEFAULT NULL,
-  `contact_phone` MEDIUMTEXT NULL DEFAULT NULL,
-  `comment` MEDIUMTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Order_filling'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Order_filling`;
-		
-CREATE TABLE `Order_filling` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `order_id` INTEGER NULL DEFAULT NULL,
-  `exemplar_id` INTEGER NULL DEFAULT NULL,
-  `amount` INTEGER NULL DEFAULT NULL,
-  `price` INTEGER NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Categories'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Categories`;
-		
-CREATE TABLE `Categories` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `parent_cat_id` INTEGER NULL DEFAULT NULL,
-  `title` MEDIUMTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'G_CAT_connection'
--- 
--- ---
-
-DROP TABLE IF EXISTS `G_CAT_connection`;
-		
-CREATE TABLE `G_CAT_connection` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `categ_id` INTEGER NULL DEFAULT NULL,
-  `goods_id` INTEGER NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Table 'Attribute_value'
--- 
--- ---
-
-DROP TABLE IF EXISTS `Attribute_value`;
-		
-CREATE TABLE `Attribute_value` (
-  `id` INTEGER NULL AUTO_INCREMENT DEFAULT NULL,
-  `attribute_id` INTEGER NULL DEFAULT NULL,
-  `value` MEDIUMTEXT NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-);
-
--- ---
--- Foreign Keys 
--- ---
-
-ALTER TABLE `GC_connection` ADD FOREIGN KEY (goods_id) REFERENCES `Goods` (`id`);
-ALTER TABLE `GC_connection` ADD FOREIGN KEY (char_id) REFERENCES `Characteristics` (`id`);
-ALTER TABLE `Goods_exemplars` ADD FOREIGN KEY (goods_id) REFERENCES `Goods` (`id`);
-ALTER TABLE `Attribute` ADD FOREIGN KEY (categ_id) REFERENCES `Categories` (`id`);
-ALTER TABLE `Storage` ADD FOREIGN KEY (exemplar_id) REFERENCES `Goods_exemplars` (`id`);
-ALTER TABLE `Prices` ADD FOREIGN KEY (exemplar_id) REFERENCES `Goods_exemplars` (`id`);
-ALTER TABLE `Orders` ADD FOREIGN KEY (contractor_id) REFERENCES `Contractors` (`id`);
-ALTER TABLE `Order_filling` ADD FOREIGN KEY (order_id) REFERENCES `Orders` (`id`);
-ALTER TABLE `Order_filling` ADD FOREIGN KEY (exemplar_id) REFERENCES `Goods_exemplars` (`id`);
-ALTER TABLE `G_CAT_connection` ADD FOREIGN KEY (categ_id) REFERENCES `Categories` (`id`);
-ALTER TABLE `G_CAT_connection` ADD FOREIGN KEY (goods_id) REFERENCES `Goods` (`id`);
-ALTER TABLE `Attribute_value` ADD FOREIGN KEY (attribute_id) REFERENCES `Attribute` (`id`);
-
--- ---
--- Table Properties
--- ---
-
--- ALTER TABLE `Goods` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Characteristics` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `GC_connection` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Goods_exemplars` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Attribute` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Storage` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Prices` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Orders` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Contractors` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Order_filling` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Categories` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `G_CAT_connection` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
--- ALTER TABLE `Attribute_value` ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
-
--- ---
--- Test Data
--- ---
-
--- INSERT INTO `Goods` (`id`,`title`) VALUES
--- ('','');
--- INSERT INTO `Characteristics` (`id`,`title`) VALUES
--- ('','');
--- INSERT INTO `GC_connection` (`id`,`goods_id`,`char_id`,`value`) VALUES
--- ('','','','');
--- INSERT INTO `Goods_exemplars` (`id`,`goods_id`,`attribute_value_list`) VALUES
--- ('','','');
--- INSERT INTO `Attribute` (`id`,`title`,`categ_id`) VALUES
--- ('','','');
--- INSERT INTO `Storage` (`id`,`exemplar_id`,`amount`) VALUES
--- ('','','');
--- INSERT INTO `Prices` (`id`,`exemplar_id`,`type`,`value`) VALUES
--- ('','','','');
--- INSERT INTO `Orders` (`id`,`type`,`contractor_id`,`date`,`confirmed`,`comment`) VALUES
--- ('','','','','','');
--- INSERT INTO `Contractors` (`id`,`director`,`contact_person`,`contact_phone`,`comment`) VALUES
--- ('','','','','');
--- INSERT INTO `Order_filling` (`id`,`order_id`,`exemplar_id`,`amount`,`price`) VALUES
--- ('','','','','');
--- INSERT INTO `Categories` (`id`,`parent_cat_id`,`title`) VALUES
--- ('','','');
--- INSERT INTO `G_CAT_connection` (`id`,`categ_id`,`goods_id`) VALUES
--- ('','','');
--- INSERT INTO `Attribute_value` (`id`,`attribute_id`,`value`) VALUES
--- ('','','');
-
+	<group label="Date &amp; Time" color="rgb(200,255,200)">
+		<type label="Date" length="0" sql="DATE" quote="'"/>
+		<type label="Time" length="0" sql="TIME" quote="'"/>
+		<type label="Datetime" length="0" sql="DATETIME" quote="'"/>
+		<type label="Year" length="0" sql="YEAR" quote=""/>
+		<type label="Timestamp" length="0" sql="TIMESTAMP" quote="'"/>
+	</group>
+	
+	<group label="Miscellaneous" color="rgb(200,200,255)">
+		<type label="ENUM" length="1" sql="ENUM" quote=""/>
+		<type label="SET" length="1" sql="SET" quote=""/>
+		<type label="Bit" length="0" sql="bit" quote=""/>
+	</group>
+</datatypes><table x="498" y="181" name="Goods">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="title" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="985" y="24" name="Characteristics">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="title" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="739" y="56" name="GC_connection">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="goods_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Goods" row="id" />
+</row>
+<row name="char_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Characteristics" row="id" />
+</row>
+<row name="value" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="768" y="258" name="Goods_exemplars">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="goods_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Goods" row="id" />
+</row>
+<row name="attribute_value_list" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="277" y="218" name="Attribute">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="title" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="categ_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Categories" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1049" y="327" name="Storage">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="exemplar_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Goods_exemplars" row="id" />
+</row>
+<row name="amount" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="1007" y="173" name="Prices">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="exemplar_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Goods_exemplars" row="id" />
+</row>
+<row name="type" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="value" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="571" y="465" name="Orders">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="type" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="contractor_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Contractors" row="id" />
+</row>
+<row name="date" null="1" autoincrement="0">
+<datatype>DATE</datatype>
+<default>NULL</default></row>
+<row name="confirmed" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="comment" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="220" y="430" name="Contractors">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="director" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="contact_person" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="contact_phone" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<row name="comment" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="837" y="454" name="Order_filling">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="order_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Orders" row="id" />
+</row>
+<row name="exemplar_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Goods_exemplars" row="id" />
+</row>
+<row name="amount" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="price" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="43" y="113" name="Categories">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="parent_cat_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="title" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="387" y="31" name="G_CAT_connection">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="categ_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Categories" row="id" />
+</row>
+<row name="goods_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Goods" row="id" />
+</row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+<table x="510" y="317" name="Attribute_value">
+<row name="id" null="1" autoincrement="1">
+<datatype>INTEGER</datatype>
+<default>NULL</default></row>
+<row name="attribute_id" null="1" autoincrement="0">
+<datatype>INTEGER</datatype>
+<default>NULL</default><relation table="Attribute" row="id" />
+</row>
+<row name="value" null="1" autoincrement="0">
+<datatype>MEDIUMTEXT</datatype>
+<default>NULL</default></row>
+<key type="PRIMARY" name="">
+<part>id</part>
+</key>
+</table>
+</sql>
