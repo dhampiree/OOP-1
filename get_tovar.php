@@ -7,11 +7,22 @@ define('DB_NAME', 'u372374362_db');
 
 class TovarList {
 	private $connection;
+	private $list;
 	
-	function __construct() {
+	function __construct($cat_id) {
 		$this->connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
 		if ($this->connection->connect_error) {
 			die('Connect Error ('.$this->connection->connect_errno.') '.$this->connection->connect_error);
+		}
+		
+		$this->list = $this->get_exemplars($cat_id);
+		$goods = $this->g_idxArr($this->list);
+		$exemplars = $this->idxArr($this->list);
+		
+		foreach ($this->list as $row) {
+			$row['characteristics'] = $this->get_characteristics($goods);
+			$row['attributes'] = $this->get_attributes($row['attribute_list']);
+			$row['prices'] = $this->prices($exemplars);
 		}
 	}
 	
@@ -79,6 +90,35 @@ class TovarList {
 		$result->close();
 		return $ret_val;
 	}
+	
+	function idxArr($list) {
+		$i=0;
+		while (!is_null($list[$i]["idx"])) {
+			$idx_array .= $list[$i]["idx"].", ";
+			$i++;
+		}
+		
+		return substr($idx_array, 0, -2);
+	}
+
+	function g_idxArr($list) {
+		$x=0;
+		while (!is_null($list[$x]["g_idx"])) {
+			$g_idx_array[$x] .= $list[$x]["g_idx"].", ";
+			$x++;
+		}
+		
+		$unicalArray = array_unique($g_idx_array);
+		$unicalArrayValues = array_values($unicalArray);
+		
+		$z=0;
+		while (!is_null($unicalArrayValues[$z])) {
+			$val_g_idx .= $unicalArrayValues[$z]." ";
+			$z++;
+		}
+		
+		return substr($val_g_idx,0,-3);
+	}
 }
 
 /*
@@ -142,33 +182,6 @@ IN (
 */
 $a = new TovarList ();
 $list = $a->get_exemplars(1);
-function idxArr($list)
-  {
-    $i=0;
-        while (!is_null($list[$i]["idx"])) {
-          $idx_array .= $list[$i]["idx"].", ";
-          $i++;
-        }
-     return substr($idx_array, 0, -2);
-  }
-
-  function g_idxArr($list)
-  {
-    $x=0;
-        while (!is_null($list[$x]["g_idx"])) {
-          $g_idx_array[$x] .= $list[$x]["g_idx"].", ";
-          $x++;
-        }
-    $unicalArray = array_unique($g_idx_array);
-    $unicalArrayValues = array_values($unicalArray);
-    $z=0;
-        while (!is_null($unicalArrayValues[$z])) {
-          $val_g_idx .= $unicalArrayValues[$z]." ";
-          $z++;
-         } 
-    return substr($val_g_idx,0,-3);
-     
-  }
      
 echo idxArr($list);
 echo "<br>";
