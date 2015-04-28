@@ -54,6 +54,20 @@ class TovarList {
 		return $this->simple_select($query);
 	}
 	
+	function get_characteristics($goods_list_string) { 
+		$query = '
+		SELECT Goods.id AS idx, Goods.title AS title, Characteristic.title AS cat_title ,GC_connection.value AS value
+		FROM Goods
+		JOIN GC_connection
+		    ON GC_connection.goods_id = Goods.id
+		JOIN Characteristic
+		    ON GC_connection.categ_id = Characteristic.id
+		WHERE Goods.id IN ('.$goods_list_string.')
+		';
+		
+		return $this->simple_select($query);
+	}
+	
 	function get_prices($idx_array_string) {
 		
 		$query = '
@@ -180,11 +194,6 @@ IN (
     WHERE G_CAT_connection.categ_id =1
 )
 */
-$a = new TovarList ();
-$list = $a->get_exemplars(1);
-     
-echo idxArr($list);
-echo "<br>";
-echo g_idxArr($list);
+$a = new TovarList(1);
 
 ?>
