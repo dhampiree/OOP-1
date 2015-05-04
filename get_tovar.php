@@ -13,6 +13,8 @@ Help
 @KarponterKarponter 6 days ago Update get_tovar.php
 2 contributors @Karponter @Fraideron
 RawBlameHistory    200 lines (155 sloc)  4.705 kb
+
+https://www.datatables.net/
 <?php
 define('DB_HOST', 'mysql.hostinger.com.ua');
 define('DB_USER', 'u372374362_user');
