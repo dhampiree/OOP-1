@@ -1,10 +1,23 @@
+Skip to content
+ This repository
+Explore
+Gist
+Blog
+Help
+@Fraideron Fraideron
+ 
+ Watch 1
+  Star 0
+ Fork 0LabbyForKspu/OOP
+ branch: master  OOP/get_tovar.php
+@KarponterKarponter 6 days ago Update get_tovar.php
+2 contributors @Karponter @Fraideron
+RawBlameHistory    200 lines (155 sloc)  4.705 kb
 <?php
-
 define('DB_HOST', 'mysql.hostinger.com.ua');
 define('DB_USER', 'u372374362_user');
 define('DB_PASS', '28890929');
 define('DB_NAME', 'u372374362_db');
-
 class TovarList {
 	private $connection;
 	private $list;
@@ -106,65 +119,57 @@ class TovarList {
 	}
 	
 	function idxArr($list) {
-		$i=0;
-		while (!is_null($list[$i]["idx"])) {
-			$idx_array .= $list[$i]["idx"].", ";
-			$i++;
+		$idx_array= array();
+		
+		foreach ($list as $value) {
+			$idx_array .= $value.", ";
 		}
 		
 		return substr($idx_array, 0, -2);
 	}
-
 	function g_idxArr($list) {
-		$x=0;
-		while (!is_null($list[$x]["g_idx"])) {
-			$g_idx_array[$x] .= $list[$x]["g_idx"].", ";
-			$x++;
+		$g_idx_array =  array();
+		foreach ($list as $val) {
+			$g_idx_array .= $g_idx_array.", ";
 		}
 		
+
+		$val_g_idx  = array();
 		$unicalArray = array_unique($g_idx_array);
 		$unicalArrayValues = array_values($unicalArray);
 		
-		$z=0;
-		while (!is_null($unicalArrayValues[$z])) {
-			$val_g_idx .= $unicalArrayValues[$z]." ";
-			$z++;
-		}
 		
+		foreach ($unicalArrayValues as $we) {
+		 	$val_g_idx .= $we." ";
+		 } 
+
 		return substr($val_g_idx,0,-3);
 	}
 }
-
 /*
 SELECT Attribute.title AS title, Attribute_value.value AS value
 FROM Attribute
-
 LEFT JOIN Attribute_value
     ON Attribute_value.attribute_id = Attribute.id
     
 WHERE Attribute_value.id IN (1,2)
 */
-
 /* grabbing prices
 SELECT Prices.id AS idx, Goods_exemplars.id AS ex_idx, Prices.type AS type, Prices.value AS value
 FROM Goods_exemplars
-
 LEFT JOIN Prices
     ON Goods_exemplars.id = Prices.exemplar_id
     
 WHERE Goods_exemplars.id IN (1,2,3)
 */
-
 /* grab exemplars
 SELECT Goods_exemplars.id AS idx, Goods.id AS g_idx, Goods.title AS title, Storage.amount as amount
 FROM Goods_exemplars
-
 LEFT JOIN Storage
     ON Storage.exemplar_id = Goods_exemplars.id
     
 JOIN Goods
     ON Goods.id = Goods_exemplars.goods_id
-
 WHERE Goods_exemplars.goods_id
 IN (
     SELECT G_CAT_connection.goods_id
@@ -172,12 +177,9 @@ IN (
     WHERE G_CAT_connection.categ_id =1
 )
 */
-
-
 /*
 SELECT *
 FROM Goods_exemplars
-
 LEFT JOIN Prices
     ON Prices.exemplar_id = Goods_exemplars.id
 LEFT JOIN Storage
@@ -186,7 +188,6 @@ JOIN Goods
     ON Goods.id = Goods_exemplars.id
 JOIN GC_connection
     ON GC_connection.goods_id = Goods_exemplars.id
-
 WHERE Goods_exemplars.goods_id
 IN (
     SELECT G_CAT_connection.goods_id
@@ -195,5 +196,6 @@ IN (
 )
 */
 $a = new TovarList(1);
-
 ?>
+Status API Training Shop Blog About
+© 2015 GitHub, Inc. Terms Privacy Security Contact
