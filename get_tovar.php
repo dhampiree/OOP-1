@@ -288,7 +288,7 @@ class ViewGateway {
 						break 2;
 					} else {
 						echo '<td></td>';
-					
+					}
 				}	
 			}
 			
