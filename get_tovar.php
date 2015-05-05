@@ -242,7 +242,7 @@ class ViewGateway {
 
 		}
 		
-		echo '<table><tbody><tr><td># товару</td><td>Назва товару</td><td>Категорія</td>';
+		echo '<table><tbody><tr><td># товару</td><td>Назва товару</td>';
 		foreach ($diffCharacteristics as $value)
 			echo '<td>'.$value.'</td>';
 		foreach ($diffAttributes as $value)
@@ -250,7 +250,40 @@ class ViewGateway {
 		foreach ($diffPrices as $value)
 			echo '<td>'.$value.'</td>';
 		echo '</tr>';
-
+		
+		foreach ($unpacked as $tovar) {
+			echo '<tr>';
+			
+			echo '<td>'.$tovar->idx.'</td>';
+			echo '<td>'.$tovar->title.'</td>';
+			
+			foreach ($tovar->characteristics as $char) {
+				foreach ($diffCharacteristics as $value) {
+					$content = '';
+					if ($value == $char->title) $content = $char->value;
+					echo '<td>'.$content.'</td>'; 
+				}	
+			}
+			
+			foreach ($tovar->attributes as $attr) {
+				foreach ($diffAttributes as $value) {
+					$content = '';
+					if ($value == $attr->title) $content = $attr->value;
+					echo '<td>'.$content.'</td>'; 
+				}	
+			}
+		
+			foreach ($tovar->prices as $price) {
+				foreach ($diffPrices as $value) {
+					$content = '';
+					if ($value == $price->type) $content = $price->value;
+					echo '<td>'.$content.'</td>'; 
+				}	
+			}
+			
+			
+			echo '</tr>';
+		}
 		echo '</tbody></table>';
 		return true;
 	}
