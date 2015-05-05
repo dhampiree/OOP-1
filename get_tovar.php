@@ -1,8 +1,9 @@
 <?php
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
+
+define('DB_HOST', 'mysql.hostinger.com.ua');
+define('DB_USER', 'u372374362_user');
 define('DB_PASS', '28890929');
-define('DB_NAME', 'Kotia');
+define('DB_NAME', 'u372374362_db');
 
 Header("Content-Type: text/html; charset=utf-8");
 
