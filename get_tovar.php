@@ -1,25 +1,11 @@
-Skip to content
- This repository
-Explore
-Gist
-Blog
-Help
-@Fraideron Fraideron
- 
- Watch 1
-  Star 0
- Fork 0LabbyForKspu/OOP
- branch: master  OOP/get_tovar.php
-@KarponterKarponter 6 days ago Update get_tovar.php
-2 contributors @Karponter @Fraideron
-RawBlameHistory    200 lines (155 sloc)  4.705 kb
-
-https://www.datatables.net/
 <?php
-define('DB_HOST', 'mysql.hostinger.com.ua');
-define('DB_USER', 'u372374362_user');
+define('DB_HOST', 'localhost');
+define('DB_USER', 'root');
 define('DB_PASS', '28890929');
-define('DB_NAME', 'u372374362_db');
+define('DB_NAME', 'Kotia');
+
+Header("Content-Type: text/html; charset=utf-8");
+
 class TovarList {
 	private $connection;
 	private $list;
@@ -34,22 +20,36 @@ class TovarList {
 		$goods = $this->g_idxArr($this->list);
 		$exemplars = $this->idxArr($this->list);
 		
-		foreach ($this->list as $row) {
-			$row['characteristics'] = $this->get_characteristics($goods);
-			$row['attributes'] = $this->get_attributes($row['attribute_list']);
-			$row['prices'] = $this->prices($exemplars);
+		$prices = $this->get_prices($exemplars);
+		$characteristics = $this->get_characteristics($goods);
+
+		foreach ($this->list as $key =>$row) {
+			$chars_list = array();
+			foreach ($characteristics as $char)
+				if ($char['g_idx'] == $row['g_idx'])
+					array_push($chars_list, $char);
+
+			$price_list = array();
+			foreach ($prices as $price)
+				if ($price['ex_idx'] == $row['idx'])
+					array_push($price_list, $price);
+
+			$this->list[$key]['characteristics'] = $chars_list;
+			$this->list[$key]['attributes'] = $this->get_attributes($row['attribute_value_list']);
+			$this->list[$key]['prices'] = $price_list;
 		}
 	}
-	
-	function get_exemplars($cat_id) {
+
+	private function get_exemplars($cat_id) {
 		
 		if (!is_integer($cat_id) and $cat_id != 0) {
-			console.log('ERROR: get_tovar: category id is not integer');
+			error_log('ERROR: get_tovar: category id is not integer');
 			exit();
 		}
 		
 		$query = '
-		SELECT Goods_exemplars.id AS idx, Goods.id AS g_idx, Goods.title AS title, Storage.amount as amount
+		SELECT Goods_exemplars.id AS idx, Goods_exemplars.attribute_value_list AS attribute_value_list,
+			Goods.id AS g_idx, Goods.title AS title, Storage.amount as amount
 		FROM Goods_exemplars
 		
 		LEFT JOIN Storage
@@ -69,21 +69,21 @@ class TovarList {
 		return $this->simple_select($query);
 	}
 	
-	function get_characteristics($goods_list_string) { 
+	private function get_characteristics($goods_list_string) { 
 		$query = '
-		SELECT Goods.id AS idx, Goods.title AS title, Characteristic.title AS cat_title ,GC_connection.value AS value
+		SELECT Goods.id as g_idx, Characteristics.title AS title ,GC_connection.value AS value
 		FROM Goods
 		JOIN GC_connection
 		    ON GC_connection.goods_id = Goods.id
-		JOIN Characteristic
-		    ON GC_connection.categ_id = Characteristic.id
+		JOIN Characteristics
+		    ON GC_connection.char_id = Characteristics.id
 		WHERE Goods.id IN ('.$goods_list_string.')
 		';
 		
 		return $this->simple_select($query);
 	}
 	
-	function get_prices($idx_array_string) {
+	private function get_prices($idx_array_string) {
 		
 		$query = '
 			SELECT Prices.id AS idx, Goods_exemplars.id AS ex_idx, Prices.type AS type, Prices.value AS value
@@ -96,7 +96,7 @@ class TovarList {
 		return $this->simple_select($query);
 	}
 	
-	function get_attributes($attr_list_string) {
+	private function get_attributes($attr_list_string) {
 		
 		$query = '
 		SELECT Attribute.title AS title, Attribute_value.value AS value
@@ -109,7 +109,8 @@ class TovarList {
 		return $this->simple_select($query);
 	}
 	
-	function simple_select($query) {
+	private function simple_select($query) {
+		# var_dump($query);
 		$ret_val = array();
 		$result = $this->connection->query($query);
 		
@@ -120,84 +121,141 @@ class TovarList {
 		return $ret_val;
 	}
 	
-	function idxArr($list) {
-		$idx_array= array();
+	private function idxArr($list) {
+		$retVal = '';
+
+		foreach ($list as $row)
+			$retVal .= $row['idx'].', ';
 		
-		foreach ($list as $value) {
-			$idx_array .= $value.", ";
-		}
-		
-		return substr($idx_array, 0, -2);
+		return substr($retVal, 0, -2);
 	}
-	function g_idxArr($list) {
-		$g_idx_array =  array();
-		foreach ($list as $val) {
-			$g_idx_array .= $g_idx_array.", ";
+
+	private function g_idxArr($list) {
+		$g_idx_array = array();
+		$retVal = '';
+
+		foreach ($list as $row) {
+			if (!array_search($row['g_idx'], $g_idx_array)) 
+				array_push($g_idx_array, $row['g_idx']);
 		}
-		
 
-		$val_g_idx  = array();
-		$unicalArray = array_unique($g_idx_array);
-		$unicalArrayValues = array_values($unicalArray);
+		foreach ($g_idx_array as $row)
+			$retVal .= $row.', ';
 		
-		
-		foreach ($unicalArrayValues as $we) {
-		 	$val_g_idx .= $we." ";
-		 } 
+		return substr($retVal, 0, -2);
+	}
 
-		return substr($val_g_idx,0,-3);
+	function getTovars() {
+		return $this->list;
 	}
 }
-/*
-SELECT Attribute.title AS title, Attribute_value.value AS value
-FROM Attribute
-LEFT JOIN Attribute_value
-    ON Attribute_value.attribute_id = Attribute.id
-    
-WHERE Attribute_value.id IN (1,2)
-*/
-/* grabbing prices
-SELECT Prices.id AS idx, Goods_exemplars.id AS ex_idx, Prices.type AS type, Prices.value AS value
-FROM Goods_exemplars
-LEFT JOIN Prices
-    ON Goods_exemplars.id = Prices.exemplar_id
-    
-WHERE Goods_exemplars.id IN (1,2,3)
-*/
-/* grab exemplars
-SELECT Goods_exemplars.id AS idx, Goods.id AS g_idx, Goods.title AS title, Storage.amount as amount
-FROM Goods_exemplars
-LEFT JOIN Storage
-    ON Storage.exemplar_id = Goods_exemplars.id
-    
-JOIN Goods
-    ON Goods.id = Goods_exemplars.goods_id
-WHERE Goods_exemplars.goods_id
-IN (
-    SELECT G_CAT_connection.goods_id
-    FROM G_CAT_connection
-    WHERE G_CAT_connection.categ_id =1
-)
-*/
-/*
-SELECT *
-FROM Goods_exemplars
-LEFT JOIN Prices
-    ON Prices.exemplar_id = Goods_exemplars.id
-LEFT JOIN Storage
-    ON Storage.exemplar_id = Goods_exemplars.id
-JOIN Goods
-    ON Goods.id = Goods_exemplars.id
-JOIN GC_connection
-    ON GC_connection.goods_id = Goods_exemplars.id
-WHERE Goods_exemplars.goods_id
-IN (
-    SELECT G_CAT_connection.goods_id
-    FROM G_CAT_connection
-    WHERE G_CAT_connection.categ_id =1
-)
-*/
-$a = new TovarList(1);
+
+class JSON_handler {
+	function pack($data) {
+		return json_encode($data);
+	}
+
+	function unpack($data) {
+		return json_decode($data);
+	}
+}
+
+class Bridge {
+	private $JSON_handler;
+
+	function __construct() {
+		$this->JSON_handler = new JSON_handler();
+	}
+
+	function getTovars($category) {
+		$list = new TovarList($category);
+		return $this->JSON_handler->pack(
+			$list->getTovars()
+		);
+	}
+}
+
+class ViewGateway {
+
+	private $tovars;
+	private $bridge;
+	private $unpacker;
+
+	function __construct() {
+		$this->tovars = false;
+		$this->bridge = new Bridge();
+		$this->unpacker = new JSON_handler();
+	}
+
+	function loadTovarsOfCategory($category) {
+		$this->tovars = $this->bridge->getTovars($category);
+	}	
+
+	function toHTML() {
+		if (!$this->tovars) return false;
+
+		$diffCharacteristics = array();
+		$diffPrices = array();
+		$diffAttributes = array();
+
+		$unpacked = $this->unpacker->unpack($this->tovars);
+		# var_dump($unpacked);
+
+		foreach ($unpacked as $value) {
+
+			foreach ($value->characteristics as $char) {
+				if (array_search(
+					$char->title, 
+					$diffCharacteristics
+				) === false) {
+					array_push(
+						$diffCharacteristics, 
+						$char->title
+					);
+				}
+			}
+
+			foreach ($value->prices as $price) {
+				if (array_search(
+					$price->type, 
+					$diffPrices
+				) === false) {
+					array_push(
+						$diffPrices, 
+						$price->type
+					);
+				}
+			}
+
+			foreach ($value->attributes as $attr) {
+				if (array_search(
+					$attr->title, 
+					$diffAttributes
+				) === false) {
+					array_push(
+						$diffAttributes, 
+						$attr->title
+					);
+				}
+			}
+
+		}
+		
+		echo '<table><tbody><tr><td># товару</td><td>Назва товару</td><td>Категорія</td>';
+		foreach ($diffCharacteristics as $value)
+			echo '<td>'.$value.'</td>';
+		foreach ($diffAttributes as $value)
+			echo '<td>'.$value.'</td>';
+		foreach ($diffPrices as $value)
+			echo '<td>'.$value.'</td>';
+		echo '</tr>';
+
+		echo '</tbody></table>';
+		return true;
+	}
+}
+
+$a = new ViewGateway();
+$a->loadTovarsOfCategory(1);
+$a->toHTML();
 ?>
-Status API Training Shop Blog About
-© 2015 GitHub, Inc. Terms Privacy Security Contact
