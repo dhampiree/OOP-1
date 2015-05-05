@@ -257,9 +257,8 @@ class ViewGateway {
 			echo '<td>'.$tovar->idx.'</td>';
 			echo '<td>'.$tovar->title.'</td>';
 			
-			
-			foreach ($diffCharacteristics as $value) {
-				foreach ($tovar->characteristics as $char) {
+			foreach ($tovar->characteristics as $char) {
+				foreach ($diffCharacteristics as $value) {
 					if ($value == $char->title) {
 						echo '<td>'.$char->value.'</td>';
 						break 2;
@@ -270,8 +269,8 @@ class ViewGateway {
 				}	
 			}
 			
-			foreach ($diffAttributes as $value) {
-				foreach ($tovar->attributes as $attr) {
+			foreach ($tovar->attributes as $attr) {
+				foreach ($diffAttributes as $value) {
 					if ($value == $attr->title) {
 						echo '<td>'.$attr->value.'</td>';
 						break 2;
@@ -281,8 +280,8 @@ class ViewGateway {
 				}	
 			}
 		
-			foreach ($diffPrices as $value) {
-				foreach ($tovar->prices as $price) {
+			foreach ($tovar->prices as $price) {
+				foreach ($diffPrices as $value) {
 					if ($value == $price->type) {
 						echo '<td>'.$price->value.'</td>';
 						break 2;
