@@ -1,9 +1,14 @@
 <?php
 
 require_once 'core/config.php';
-use storage;
-use logic;
-use view;
+require_once 'core/storage.php';
+require_once 'core/logic.php';
+require_once 'core/view.php';
+
+use \storage\TovarList;
+use \logic\JSON_handler;
+use \logic\Bridge;
+use \view\ViewGateway;
 
 Header("Content-Type: text/html; charset=utf-8");
 
