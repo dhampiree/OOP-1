@@ -1,5 +1,5 @@
 <?php
-	namespace core;
+	namespace storage;
 	
 	class TovarList {
 	private $connection;
