@@ -1,5 +1,5 @@
 <?php
-	namespace view;
+	namespace logic;
 
 class Bridge {
 	private $JSON_handler;
