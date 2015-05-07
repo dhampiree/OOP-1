@@ -1,6 +1,9 @@
 <?php
 namespace core\view;
-	
+
+use core\logic\Bridge;
+use core\logic\JSON_handler;
+
 class ViewGateway {
 
 	private $tovars;
