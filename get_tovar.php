@@ -1,18 +1,14 @@
 <?php
 
 require_once 'core/config.php';
-require_once 'core/storage.php';
-require_once 'core/logic.php';
-require_once 'core/view.php';
 
-use \storage\TovarList;
-use \logic\JSON_handler;
-use \logic\Bridge;
-use \view\ViewGateway;
+use \core\storage;
+use \core\logic;
+use \core\view;
 
 Header("Content-Type: text/html; charset=utf-8");
 
-$a = new ViewGateway();
+$a = new storage\ViewGateway();
 $a->loadTovarsOfCategory(1);
 $a->toHTML();
 ?>
