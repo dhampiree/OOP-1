@@ -1,5 +1,5 @@
 <?php
-	namespace view;
+	namespace logic;
 	
 class JSON_handler {
 	function pack($data) {
