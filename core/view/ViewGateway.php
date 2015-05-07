@@ -1,5 +1,5 @@
 <?php
-namespace core;
+namespace view;
 	
 class ViewGateway {
 
