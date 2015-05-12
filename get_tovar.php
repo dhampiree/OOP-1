@@ -1,6 +1,8 @@
 <?php
 include('autoloader.php');
 
+namespace get_tovar;
+
 use \core\storage\TovarList;
 use \core\logic\Bridge;
 use \core\logic\JSON_handler;
