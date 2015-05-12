@@ -1,5 +1,5 @@
 <?php
-	namespace core/logic;
+	namespace core\logic;
 
 class Bridge {
 	private $JSON_handler;
