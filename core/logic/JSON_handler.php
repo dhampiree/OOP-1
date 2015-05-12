@@ -1,5 +1,5 @@
 <?php
-	namespace core/logic;
+	namespace core\logic;
 	
 class JSON_handler {
 	function pack($data) {
