@@ -1,4 +1,6 @@
 <?php
+include('autoloader.php');
+
 namespace core\view;
 
 use core\logic\Bridge;
