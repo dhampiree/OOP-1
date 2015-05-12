@@ -1,10 +1,11 @@
 <?php
+include('autoloader.php');
 
-require_once 'core/config.php';
+use \core\storage\TovarList;
+use \core\logic\Bridge;
+use \core\logic\JSON_handler;
+use \core\view\ViewGateway;
 
-use \core\storage;
-use \core\logic;
-use \core\view;
 
 Header("Content-Type: text/html; charset=utf-8");
 
