@@ -1,5 +1,7 @@
 <?php 
 
+namespace Category_tree;
+
 define('DB_HOST', 'localhost');
 define('DB_USER', 'root');
 define('DB_PASS', '28890929');
