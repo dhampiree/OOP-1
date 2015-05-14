@@ -4,16 +4,22 @@ include('autoloader.php');
 include('core/config.php');
 
 use \core\storage\TovarList;
+use \core\storage\CategoryTree;
+use \core\storage\CategoryTreeNode;
 use \core\logic\Bridge;
 use \core\logic\JSON_handler;
 use \core\view\ViewGateway;
 
-
 Header("Content-Type: text/html; charset=utf-8");
 
-$a = new ViewGateway();
-$a->loadTovarsOfCategory(1);
-$a->toHTML();
+if (isset($_GET['cid'])) {
+	$a = new ViewGateway();
+	$a->loadTovarsOfCategory(intval($_GET['cid']));
+	$a->toHTML();
+} else {
+	$a = new CategoryTree();
+	var_dump($a->acsessRootNode());
+}
 ?>
 
 <script type="text/javascript">
