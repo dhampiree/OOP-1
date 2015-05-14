@@ -32,5 +32,9 @@ class CategoryTreeNode {
 	function have_children() { 
 		# if array empty $this->children return false else return true
 	}
+	
+	function toHTML() {
+		echo '<li><a href="index.php?cid='.$this->category_id.'">'.$this->category_name.'</a></li>';
+	}
 }
 ?>
