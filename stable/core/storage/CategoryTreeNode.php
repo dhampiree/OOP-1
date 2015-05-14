@@ -1,6 +1,6 @@
 <?php 
 
-namespace core\storage
+namespace core\storage;
 /**
 * tree node prototype
 */
