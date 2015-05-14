@@ -35,6 +35,12 @@ class CategoryTreeNode {
 	
 	function toHTML() {
 		echo '<li><a href="index.php?cid='.$this->category_id.'">'.$this->category_name.'</a></li>';
+		if (!empty($this->children)) {
+			echo '<ul>';
+			foreach ($this->children as $node)
+				$node->toHTML();
+			echo '</ul>';
+		}
 	}
 }
 ?>
