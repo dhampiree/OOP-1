@@ -20,6 +20,10 @@ Header("Content-Type: text/html; charset=utf-8");
 			margin-left: 2em;
 			border: 1px solid black;
 		}
+		td {
+			border: 1px solid black;
+			padding: 5px;
+		}
 	</style>	
 </head>
 <body>
