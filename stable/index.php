@@ -11,7 +11,19 @@ use \core\logic\JSON_handler;
 use \core\view\ViewGateway;
 
 Header("Content-Type: text/html; charset=utf-8");
-
+?>
+<html>
+<head>
+	<style>
+		ul {
+			display:block;
+			margin-left: 2em;
+			border: 1px solid black;
+		}
+	</style>	
+</head>
+<body>
+<?php
 if (isset($_GET['cid'])) {
 	$a = new ViewGateway();
 	$a->loadTovarsOfCategory(intval($_GET['cid']));
@@ -20,8 +32,9 @@ if (isset($_GET['cid'])) {
 	$a = new CategoryTree();
 	var_dump($a->acsessRootNode());
 }
-?>
-
+?>	
+</body>
+</html>
 <script type="text/javascript">
 function sort(el) {
 	var col_sort = el.innerHTML;
