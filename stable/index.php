@@ -30,7 +30,7 @@ if (isset($_GET['cid'])) {
 	$a->toHTML();
 } else {
 	$a = new CategoryTree();
-	var_dump($a->acsessRootNode());
+	$a->toHTML();
 }
 ?>	
 </body>
