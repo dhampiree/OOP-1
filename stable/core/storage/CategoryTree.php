@@ -112,5 +112,13 @@ class CategoryTree {
 	function acsessRootNode() {
 		return $this->root_node_acsess;
 	}
+	
+	function toHTML() {
+		$cat_list = $this->acsessRootNode();
+		echo '<ul>';
+		foreach($cat_list as $category)
+			$category->toHTML();
+		echo '</ul>';
+	}
 }
 ?>
