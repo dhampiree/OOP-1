@@ -23,7 +23,7 @@ class CategoryTree {
 
 		if ($root_category_id === false) {
 			if ($result = $this->connection->query('
-				SELECT cat_id
+				SELECT id AS cat_id
 				FROM Categories
 				WHERE parent_cat_id = 0'
 			)) {
@@ -48,7 +48,7 @@ class CategoryTree {
 			if ($result = $this->connection->query('
 				SELECT *
 				FROM Categories
-				WHERE cat_id = '.$category_id
+				WHERE id = '.$category_id
 			)) {
 				$result->data_seek(0);
 				$row = $result->fetch_assoc();
