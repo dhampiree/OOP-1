@@ -46,7 +46,7 @@ class CategoryTree {
 	function parseCategory($category_id) {
 		if (is_integer($category_id) and $category_id != 0) {
 			if ($result = $this->connection->query('
-				SELECT *
+				SELECT id as cat_id, parent_cat_id, title AS cat_name
 				FROM Categories
 				WHERE id = '.$category_id
 			)) {
@@ -68,7 +68,7 @@ class CategoryTree {
 
 	function parseChildren($category_id) {
 		if ($result = $this->connection->query('
-			SELECT *
+			SELECT id as cat_id, parent_cat_id, title AS cat_name
 			FROM Categories
 			WHERE parent_cat_id = '.$category_id
 		)) {
