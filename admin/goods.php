@@ -105,7 +105,7 @@
 			if ($result->num_rows == 0) {
 				$query = '
 					INSERT INTO GC_connection (char_id, goods_id, value)
-					VALUES ("'.intval($cat_id).'", "'.intval($g_id).'", "'.$value.'")';
+					VALUES ("'.intval($char_id).'", "'.intval($g_id).'", "'.$value.'")';
 				$connection->query($query);
 			}
 		}	
@@ -236,7 +236,7 @@
 			$id = intval($_POST['id']);
 			$cat_id = intval($_POST['char_id']);
 			$value = $_POST['char_value'];
-			GC_connect($id, $cat_id, $value);
+			G_Char_connect($id, $cat_id, $value);
 		}
 	}
 ?>

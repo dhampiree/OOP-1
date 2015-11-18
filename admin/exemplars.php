@@ -104,6 +104,20 @@
 		}
 	}
 
+	function echoGoodsOptions() {
+		$connection = new mysqli(DB_HOST, DB_USER, DB_PASS, DB_NAME);
+
+		// стандартна перевірка підключення до бази даних
+		if ($connection->connect_error) {
+		    die('Connect Error ('.$connection->connect_errno.') '.$connection->connect_error);
+		}
+		
+		$result = $connection->query('SELECT * FROM Goods');
+		while ($row = $result->fetch_assoc()) {
+			echo '<option value="'.$row['id'].'">('.$row['id'].') '.$row['title'].'</option>';
+		}
+	}
+
 	if (isset($_POST['delete'])) {
 		if (isset($_POST['id'])) {
 			$id = intval($_POST['id']);
@@ -121,7 +135,7 @@
 <html>
 <head>
 	<meta charset="utf8">
-	<title>Редагування cписку атрибутів</title>
+	<title>Редагування cписку екземплярів</title>
 	<style>
 		.node {
 			margin-left: 3em;
@@ -146,6 +160,7 @@
 		<h1>Активна категорія товарів</h1>
 		<form class="topside" method="POST">
 			<select name="category" onchange="document.location='?c='+this.options[this.selectedIndex].value">
+				<option selected disabled>Оберіть категорію</option>
 				<?php echoCategoriesOptions(); ?>
 			</select>
 		</form>
@@ -162,7 +177,10 @@
 		<hr>
 		<h1>Додавання нового екземпляру</h1>
 		<form method="POST">
-			<p>Назва: <input name="name" type="text"></p>
+			<p>Товар: <select name="id">
+				<?php echoGoodsOptions(); ?>
+			</select></p>	
+			<p>Атрибути: <input name="attr_list" type="text"></p>
 			<input name="add" type="submit" value="Додати">
 		</form>
 		<hr>
@@ -171,7 +189,6 @@
 			<p>Екземпляр для видалення: <select name="id">
 				<?php echoExemplarOptions(); ?>
 			</select></p>
-			<p>Атрибути: <input name="attr_list" type="text"></p>
 			<input name="delete" type="submit" value="Видалити">
 		</form>
 		<hr>

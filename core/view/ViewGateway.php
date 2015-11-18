@@ -104,6 +104,7 @@ class ViewGateway {
 					}
 				}
 			}
+			echo '</div>';	
 		}
 
 		return true;
