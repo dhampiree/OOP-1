@@ -19,7 +19,6 @@ private:
 
 
 public:
-
   Vigenier(string secret)
   {
     this->SECRET = secret;
@@ -49,8 +48,8 @@ public:
   
 };
 
-int main(int argc, string argv[]) {
-
+int main(int argc, string argv[])
+{
   string  secret = "";
   string  message = "";
 
@@ -63,5 +62,4 @@ int main(int argc, string argv[]) {
   vig.encode(message);
   
   return 0;
-
 }
