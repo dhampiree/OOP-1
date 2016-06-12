@@ -1,4 +1,3 @@
-
 #include <string>
 #include <iostream>
 
@@ -11,7 +10,8 @@ private:
   string SECRET;
   int SECRET_CAPACITY;
 
-  int shift (int idx) {
+  int shift (int idx) 
+  {
     char c = this->SECRET[idx % this->SECRET_CAPACITY];
     int mod = (isupper(c)) ? 'A' : 'a';
     return c - mod;
@@ -28,7 +28,7 @@ public:
 
   void encode(string message) {
 
-    int INPUT_LIMIT = message.size();
+    const int INPUT_LIMIT = message.size();
     char convertor = ' ';
     for (int i = 0; i < INPUT_LIMIT; i++) 
     {
@@ -38,12 +38,14 @@ public:
         continue;
       }
       char base = (isupper(message[i])) ? 'A' : 'a';
-      convertor = base + ( message[i] + this->shift(i) - base) % 26;
+      convertor = base + (message[i] + this->shift(i) - base) % 26;
       cout << convertor;
     }
   }
 
-  ~Vigenier(){}
+  ~Vigenier()
+  {
+  }
   
 };
 
@@ -54,11 +56,10 @@ int main(int argc, string argv[]) {
 
   cout << "Enter secret key: ";
   cin >> secret;
-
+  Vigenier vig(secret);
+  
   cout << "Enter private message: ";
   cin >> message;
-  
-  Vigenier vig(secret);
   vig.encode(message);
   
   return 0;
