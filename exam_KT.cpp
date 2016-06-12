@@ -17,7 +17,6 @@ private:
     return c - mod;
   }
 
-
 public:
   Vigenier(string secret)
   {
