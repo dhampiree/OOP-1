@@ -26,8 +26,8 @@ public:
     this->SECRET_CAPACITY = secret.size();
   }
 
-  void encode(string message) {
-
+  void encode(string message) 
+  {
     const int INPUT_LIMIT = message.size();
     char convertor = ' ';
     for (int i = 0; i < INPUT_LIMIT; i++) 
